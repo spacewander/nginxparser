@@ -32,14 +32,13 @@ class NginxParser(object):
     subblock = Forward()
 
     ifblock << (
-        ifword
-        + SkipTo('{')
+        Group(ifword + Optional(space) + Optional(value) + SkipTo('{'))
         + left_bracket
-        + subblock
+        + Group(subblock)
         + right_bracket)
 
     subblock << ZeroOrMore(
-        Group(assignment) | block | ifblock | setblock
+        Group(assignment) | block | Group(ifblock) | setblock
     )
 
     block << Group(

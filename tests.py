@@ -32,6 +32,12 @@ class TestNginxParser(unittest.TestCase):
             location = exact_match\.php$ {}
             location ^~ ignore_regex\.php$ {}
 
+        }''',
+        "/etc/nginx/sites-enabled/if_condation.conf": '''
+        server {
+            if ( $request_method !~ ^(GET|POST|HEAD)$ ) {
+               return 403;
+            }
         }'''
     }
 
@@ -103,6 +109,20 @@ class TestNginxParser(unittest.TestCase):
                     [['location', '^~', 'ignore_regex\.php$'], []],
                 ]]
             ])
+
+    @mockio(files)
+    def test_parse_if_condation(self):
+        parsed = load(open("/etc/nginx/sites-enabled/if_condation.conf"))
+        print parsed
+        self.assertEqual(
+            parsed, [
+                [['server'], [[
+                        ['if', '( $request_method !~ ^(GET|POST|HEAD)$ ) ', ''], 
+                        [['return', '403']]
+                    ]]
+                ]
+            ]
+        )
 
 
 if __name__ == '__main__':
