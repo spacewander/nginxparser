@@ -28,7 +28,7 @@ class TestNginxParser(unittest.TestCase):
             location ~ case_sensitive\.php$ {
                 hoge hoge;
             }
-            location ~* case_insensitive\.php$ {}
+            location ~*case_insensitive\.php$ {}
             location = exact_match\.php$ {}
             location ^~ ignore_regex\.php$ {}
 

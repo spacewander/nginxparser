@@ -42,7 +42,7 @@ class NginxParser(object):
     )
 
     block << Group(
-        Group(key + Optional(space + modifier) + Optional(space + location))
+        Group(key + Optional(space + modifier) + Optional(space) + Optional(location))
         + left_bracket
         + Group(subblock)
         + right_bracket
